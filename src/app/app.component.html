@@ -12,7 +12,7 @@
     <img class="avatar mat-elevation-z8" src="https://media.discordapp.net/attachments/596336408252383246/688404701200646222/mr_smith_silhouette_inverse.png?width=480&height=702"/>
 
     <mat-divider></mat-divider>
-    <button mat-button class="menu-button">
+    <button mat-button class="menu-button" [routerLink]="['game']">
       <mat-icon>search</mat-icon>
       <span>Find Game</span>
     </button>
@@ -20,7 +20,7 @@
       <mat-icon>airport_shuttle</mat-icon>
       <span>Upgrade Vehicle</span>
     </button>
-    <button mat-button class="menu-button">
+    <button mat-button class="menu-button" [routerLink]="['characterselect']">
       <mat-icon>person</mat-icon>
       <span>Select Character</span>
     </button>
@@ -31,7 +31,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="content mat-elevation-z4">
-        Main Content
+      <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
