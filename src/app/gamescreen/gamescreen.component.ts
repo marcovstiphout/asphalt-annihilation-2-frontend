@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
 import {Square} from '../gamescreen/models/Square';
 import {Road} from '../gamescreen/models/Road';
+import {Vehicle} from '../gamescreen/models/Vehicle'
 
 @Component({
   selector: 'app-gamescreen',
@@ -27,8 +28,6 @@ export class GamescreenComponent implements OnInit {
       throw new Error ('Failed to get 2D Context');
     }
     this.ctx = res;
-    // this.ctx.canvas.height = innerHeight / 1.2;
-    // this.ctx.canvas.width = innerWidth / 1.2;
     this.ctx.fillStyle = 'red';
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
@@ -43,6 +42,9 @@ export class GamescreenComponent implements OnInit {
       });
       const road = new Road(this.ctx);
       road.draw();
+
+      const vehicle = new Vehicle(this.ctx);
+      vehicle.draw();
       this.requestId = requestAnimationFrame(() => this.tick);
     }
 

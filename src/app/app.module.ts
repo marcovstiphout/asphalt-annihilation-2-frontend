@@ -13,12 +13,14 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GamescreenComponent } from './gamescreen/gamescreen.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CharacterselectComponent,
-    GamescreenComponent
+    GamescreenComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
