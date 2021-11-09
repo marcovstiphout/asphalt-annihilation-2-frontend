@@ -23,4 +23,21 @@ export class Vehicle {
     public draw() {
         this.ctx.drawImage(this.carSprites["straight"], this.xAxisLocation,this.yAxisLocation,300,250);
     }
+    moveRight() {
+        this.xAxisLocation += 5;
+        console.log(this.xAxisLocation);
+        //this.draw();
+      }
+    moveLeft() {
+        this.xAxisLocation -= 5;
+        //this.draw();
+      }
+    moveForward() {
+       // this.yAxisLocation -= 5;
+        //this.draw();
+      }
+    break() {
+        //this.yAxisLocation += 5;
+       // this.draw();
+      }
 }

@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core'
 import {Square} from '../gamescreen/models/Square';
 import {Road} from '../gamescreen/models/Road';
 import {Vehicle} from '../gamescreen/models/Vehicle'
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-gamescreen',
@@ -15,6 +16,7 @@ export class GamescreenComponent implements OnInit {
   canvas: ElementRef<HTMLCanvasElement>;
 
   private ctx: CanvasRenderingContext2D;
+  public vehicle: Vehicle;
 
   requestId: number;
   interval: number;
@@ -29,10 +31,13 @@ export class GamescreenComponent implements OnInit {
     }
     this.ctx = res;
     this.ctx.fillStyle = 'red';
+
+    this.vehicle = new Vehicle(this.ctx);
+
     this.ngZone.runOutsideAngular(() => this.tick());
     setInterval(() => {
       this.tick()
-    },200);
+    },50);
   }
   
     tick() {
@@ -42,9 +47,8 @@ export class GamescreenComponent implements OnInit {
       });
       const road = new Road(this.ctx);
       road.draw();
-
-      const vehicle = new Vehicle(this.ctx);
-      vehicle.draw();
+    
+      this.vehicle.draw();
       this.requestId = requestAnimationFrame(() => this.tick);
     }
 
@@ -56,6 +60,16 @@ export class GamescreenComponent implements OnInit {
     ngOnDestroy() {
       clearInterval(this.interval);
       cancelAnimationFrame(this.requestId);
+    }
+    @HostListener('document:keypress', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) { 
+      switch(event.key)
+      {
+        case "w": {this.vehicle.moveForward(); break;}
+        case "a": {this.vehicle.moveLeft(); break;}
+        case "s": {this.vehicle.break(); break;}
+        case "d": {this.vehicle.moveRight(); break;}
+      }
     }
 
 }
