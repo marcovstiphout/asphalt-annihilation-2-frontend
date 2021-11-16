@@ -45,7 +45,8 @@ export class GamescreenComponent implements OnInit {
       road.draw();
 
       this.vehicle.draw();
-      requestAnimationFrame(()=> this.animate());
+      //requestAnimationFrame(()=> this.animate());
+      var yeet = setInterval(() => {this.animate();},1000);
     }
     //Ensures any running timers and animations are cancelled when the game is exited
     ngOnDestroy() {

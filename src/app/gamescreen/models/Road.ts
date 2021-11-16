@@ -19,7 +19,7 @@ export class Road {
         this.bright_road_image.src = '../../assets/road_bright.jpg';
         this.bright_road_striped_image.src = '../../assets/road_bright_striped.jpg';
 
-        this.blockHeight = 150;
+        this.blockHeight = Math.floor((this.ctx.canvas.height / 1.6) / 3);
     }
     public draw()
     {
@@ -29,17 +29,20 @@ export class Road {
 
         var currentBlockHeight = this.blockHeight; //Height of the current block. <== Decreases after each block, and resets next loop.
 
+        var iterationsSinceLastSwitch = 0;
         
-      var x = (this.ctx.canvas.width/2) - (currentWidth/2);//Start position on the x-axis
-      var y = this.ctx.canvas.height - 1; //Start position on the y-axis
+        var x = (this.ctx.canvas.width/2) - (currentWidth/2);//Start position on the x-axis
+        var y = this.ctx.canvas.height - 1; //Start position on the y-axis
         //[Loop Start]
-        for(var i = 0; i < (innerHeight/2); i++) //Ensures the road draws up to about the center of the screen.
+        for(var i = 0; i < (this.ctx.canvas.height / 1.6); i++) //Ensures the road draws up to about the center of the screen.
         {
+            iterationsSinceLastSwitch += 1;
         //Determine whether Bright or Dull
-            if(i % currentBlockHeight === 0) 
+            if(iterationsSinceLastSwitch == currentBlockHeight) 
             {
-                currentBlockHeight -= 10;
+                currentBlockHeight = Math.floor(currentBlockHeight * 0.68);
                 this.isBright = !this.isBright;
+                iterationsSinceLastSwitch = 0;
             }
         //Determine whether Striped or Not
             if(i % (currentBlockHeight/2) === 0 && i % currentBlockHeight !== 0) this.isStriped = !this.isStriped;
@@ -56,7 +59,7 @@ export class Road {
                     else chosenImage = this.dull_road_image
                     break;
             }
-            this.ctx.drawImage(chosenImage, x + i/2,y - i, currentWidth - i,1);
+            this.ctx.drawImage(chosenImage, x + i,y - i, currentWidth - i*2,1);
         }
         //[Loop End]
     }
