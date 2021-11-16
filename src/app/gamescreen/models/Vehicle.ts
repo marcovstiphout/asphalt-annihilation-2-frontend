@@ -25,7 +25,6 @@ export class Vehicle {
     }
     moveRight() {
         this.xAxisLocation += 5;
-        console.log(this.xAxisLocation);
         //this.draw();
       }
     moveLeft() {

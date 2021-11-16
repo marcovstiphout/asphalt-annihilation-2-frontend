@@ -54,14 +54,18 @@ export class GamescreenComponent implements OnInit {
     }
 
     //Listen for Keypress Events in order to steer the vehicle
-    @HostListener('document:keypress', ['$event'])
+    @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) { 
       switch(event.key)
       {
-        case "w": {this.vehicle.moveForward(); break;}
-        case "a": {this.vehicle.moveLeft(); break;}
-        case "s": {this.vehicle.break(); break;}
-        case "d": {this.vehicle.moveRight(); break;}
+        case "w":
+        case "ArrowUp": {this.vehicle.moveForward(); break;}
+        case "a": 
+        case "ArrowLeft": {this.vehicle.moveLeft(); break;}
+        case "s": 
+        case "ArrowDown": {this.vehicle.break(); break;}
+        case "d": 
+        case "ArrowRight": {this.vehicle.moveRight(); break;}
       }
     }
 
