@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
-import {Square} from '../gamescreen/models/Square';
 import {Road} from '../gamescreen/models/Road';
 import {Vehicle} from '../gamescreen/models/Vehicle'
 import { HostListener } from '@angular/core';
@@ -20,7 +19,6 @@ export class GamescreenComponent implements OnInit {
 
   requestId: number;
   interval: number;
-  squares: Square[] = [];
 
 
   ngOnInit(): void {
@@ -34,33 +32,28 @@ export class GamescreenComponent implements OnInit {
 
     this.vehicle = new Vehicle(this.ctx);
 
-    this.ngZone.runOutsideAngular(() => this.tick());
-    setInterval(() => {
-      this.tick()
-    },50);
+    this.ngZone.runOutsideAngular(() => this.animate());
+    this.animate();
   }
-  
-    tick() {
+
+  //Handling the game's animations
+    animate() {
+      //Optimize this later by only clearing the space that is updating
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-      this.squares.forEach((square: Square) => {
-        square.moveRight();
-      });
+      
       const road = new Road(this.ctx);
       road.draw();
-    
+
       this.vehicle.draw();
-      this.requestId = requestAnimationFrame(() => this.tick);
+      requestAnimationFrame(()=> this.animate());
     }
-
-    play() {
-      const square = new Square(this.ctx);
-      this.squares = this.squares.concat(square);
-    }
-
+    //Ensures any running timers and animations are cancelled when the game is exited
     ngOnDestroy() {
       clearInterval(this.interval);
       cancelAnimationFrame(this.requestId);
     }
+
+    //Listen for Keypress Events in order to steer the vehicle
     @HostListener('document:keypress', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) { 
       switch(event.key)
