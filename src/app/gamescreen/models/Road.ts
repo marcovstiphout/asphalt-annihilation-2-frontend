@@ -33,6 +33,10 @@ export class Road {
         
         var x = (this.ctx.canvas.width/2) - (currentWidth/2);//Start position on the x-axis
         var y = this.ctx.canvas.height - 1; //Start position on the y-axis
+
+        this.ctx.beginPath();
+        this.ctx.fillStyle = 'green';
+        this.ctx.fillRect(0, this.ctx.canvas.height - this.blockHeight, this.ctx.canvas.width, this.blockHeight);
         //[Loop Start]
         for(var i = 0; i < (this.ctx.canvas.height / 1.6); i++) //Ensures the road draws up to about the center of the screen.
         {
@@ -43,6 +47,13 @@ export class Road {
                 currentBlockHeight = Math.floor(currentBlockHeight * 0.68);
                 this.isBright = !this.isBright;
                 iterationsSinceLastSwitch = 0;
+
+                //Trying to render the environment 'underneath' the road
+                this.ctx.beginPath();
+                this.ctx.fillStyle = 'blue';
+                this.ctx.fillRect(0, (y - i) - currentBlockHeight, this.ctx.canvas.width, currentBlockHeight);
+                this.ctx.fillStyle = 'purple';
+                this.ctx.fillRect(0, (y - i) - currentBlockHeight, this.ctx.canvas.width, 1);
             }
         //Determine whether Striped or Not
             if(iterationsSinceLastSwitch == (Math.floor(currentBlockHeight * 0.75)) || iterationsSinceLastSwitch == (Math.floor(currentBlockHeight * 0.25)))
