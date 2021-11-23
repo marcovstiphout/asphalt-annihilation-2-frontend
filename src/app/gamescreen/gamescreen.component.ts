@@ -16,6 +16,7 @@ export class GamescreenComponent implements OnInit {
 
   private ctx: CanvasRenderingContext2D;
   public vehicle: Vehicle;
+  public road: Road;
 
   requestId: number;
   interval: number;
@@ -31,6 +32,7 @@ export class GamescreenComponent implements OnInit {
     this.ctx.fillStyle = 'red';
 
     this.vehicle = new Vehicle(this.ctx);
+    this.road = new Road(this.ctx);
 
     this.ngZone.runOutsideAngular(() => this.animate());
     this.animate();
@@ -41,16 +43,14 @@ export class GamescreenComponent implements OnInit {
       //Optimize this later by only clearing the space that is updating
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
       
-      const road = new Road(this.ctx);
-      road.draw();
-
+      //this.environment.draw();
+      this.road.draw();
       this.vehicle.draw();
-      //requestAnimationFrame(()=> this.animate());
-      var yeet = setInterval(() => {this.animate();},1000);
+      requestAnimationFrame(()=> this.animate());
+      //var yeet = setInterval(() => {this.animate();},1000);
     }
     //Ensures any running timers and animations are cancelled when the game is exited
     ngOnDestroy() {
-      clearInterval(this.interval);
       cancelAnimationFrame(this.requestId);
     }
 

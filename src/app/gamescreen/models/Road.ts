@@ -9,7 +9,7 @@ export class Road {
     private bright_road_striped_image = new Image();
 
     private isBright = true;
-    private isStriped = false;
+    private isStriped = true;
 
     constructor(private ctx: CanvasRenderingContext2D) 
     { 
@@ -24,7 +24,7 @@ export class Road {
     public draw()
     {
         //Determine Starting Dimension
-        var initialWidth = (this.ctx.canvas.width / 4) * 3; //Makes the road width 75% of the Screen's Width. <== Does not get updated
+        var initialWidth = this.ctx.canvas.width * 0.75; //Makes the road width 75% of the Screen's Width. <== Does not get updated
         var currentWidth = initialWidth; //Tracks the current width of a road piece. <== This one gets updated
 
         var currentBlockHeight = this.blockHeight; //Height of the current block. <== Decreases after each block, and resets next loop.
@@ -45,7 +45,11 @@ export class Road {
                 iterationsSinceLastSwitch = 0;
             }
         //Determine whether Striped or Not
-            if(i % (currentBlockHeight/2) === 0 && i % currentBlockHeight !== 0) this.isStriped = !this.isStriped;
+            if(iterationsSinceLastSwitch == (Math.floor(currentBlockHeight * 0.75)) || iterationsSinceLastSwitch == (Math.floor(currentBlockHeight * 0.25)))
+            {
+                this.isStriped = !this.isStriped;
+            }
+            //if(i % (currentBlockHeight/2) === 0 && i % currentBlockHeight !== 0) this.isStriped = !this.isStriped;
         //Draw
             var chosenImage:HTMLImageElement;
             switch(this.isBright)
