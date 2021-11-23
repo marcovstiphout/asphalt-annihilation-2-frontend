@@ -10,6 +10,7 @@ export class Road {
 
     private isBright = true;
     private isStriped = true;
+    private offset: number;
 
     constructor(private ctx: CanvasRenderingContext2D) 
     { 
@@ -20,9 +21,12 @@ export class Road {
         this.bright_road_striped_image.src = '../../assets/road_bright_striped.jpg';
 
         this.blockHeight = Math.floor((this.ctx.canvas.height / 1.6) / 3);
+        this.offset = 0;
     }
     public draw()
     {
+        this.offset += 1;
+        if(this.offset > this.ctx.canvas.height) this.offset = 0;
         //Determine Starting Dimension
         var initialWidth = this.ctx.canvas.width * 0.75; //Makes the road width 75% of the Screen's Width. <== Does not get updated
         var currentWidth = initialWidth; //Tracks the current width of a road piece. <== This one gets updated
@@ -80,6 +84,7 @@ export class Road {
                     else chosenImage = this.dull_road_image
                     break;
             }
+
             this.ctx.drawImage(chosenImage, x + i,y - i, currentWidth - i*2,1);
         }
         //[Loop End]
