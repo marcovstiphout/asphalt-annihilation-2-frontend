@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core'
 import {Road} from '../gamescreen/models/Road';
 import {Vehicle} from '../gamescreen/models/Vehicle'
 import { HostListener } from '@angular/core';
+import { Obstacle } from './models/Obstacle';
 
 @Component({
   selector: 'app-gamescreen',
@@ -17,6 +18,7 @@ export class GamescreenComponent implements OnInit {
   private ctx: CanvasRenderingContext2D;
   public vehicle: Vehicle;
   public road: Road;
+  private objects: Obstacle[] = [];
 
   requestId: number;
   interval: number;
@@ -34,6 +36,9 @@ export class GamescreenComponent implements OnInit {
     this.vehicle = new Vehicle(this.ctx);
     this.road = new Road(this.ctx);
 
+
+    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",500))
+
     this.ngZone.runOutsideAngular(() => this.animate());
     this.animate();
   }
@@ -43,8 +48,21 @@ export class GamescreenComponent implements OnInit {
       //Optimize this later by only clearing the space that is updating
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
       
+      //Text UI Things
+      this.ctx.font = '48px serif';
+      this.ctx.fillText("Current Dist: " + this.vehicle.dist, 10, 50);
+
       //this.environment.draw();
       this.road.draw();
+
+      //Draw all Obstacles that would be in the player's view
+      this.objects.forEach(element => {
+        if(element.dist - this.vehicle.dist > -250 && element.dist - this.vehicle.dist <= 500)
+        {
+          element.draw(this.vehicle.dist)
+        }
+      });
+
       this.vehicle.draw();
       requestAnimationFrame(()=> this.animate());
       //var yeet = setInterval(() => {this.animate();},1000);
