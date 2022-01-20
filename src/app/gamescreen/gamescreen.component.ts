@@ -90,6 +90,7 @@ export class GamescreenComponent implements OnInit {
 
     private handleKeyEvents()
     {
+      //Speed
         if(this.keys["w"] || this.keys["ArrowUp"])
         {
           this.vehicle.moveForward();
@@ -98,6 +99,14 @@ export class GamescreenComponent implements OnInit {
         {
           this.vehicle.break();
         }
+        
+        if(!this.keys["s"] && !this.keys["ArrowDown"] && !this.keys["w"] && !this.keys["ArrowUp"])
+        {
+          this.vehicle.naturalSlowdown();
+        }
+
+
+      //Direction
         if(this.keys["a"] || this.keys["ArrowLeft"])
         {
           this.vehicle.moveLeft();
@@ -106,21 +115,9 @@ export class GamescreenComponent implements OnInit {
         {
           this.vehicle.moveRight();
         }
+        if(!this.keys["a"] && !this.keys["ArrowLeft"] && !this.keys["d"] && !this.keys["ArrowRight"])
+        {
+          this.vehicle.straightenCar();
+        }
     }
-    /*
-    @HostListener('document:keydown', ['$event'])
-    handleKeyboardEvent(event: KeyboardEvent) { 
-      switch(event.key)
-      {
-        case "w":
-        case "ArrowUp": {this.vehicle.moveForward(); break;}
-        case "a": 
-        case "ArrowLeft": {this.vehicle.moveLeft(); break;}
-        case "s": 
-        case "ArrowDown": {this.vehicle.break(); break;}
-        case "d": 
-        case "ArrowRight": {this.vehicle.moveRight(); break;}
-      }
-    }
-*/
 }
