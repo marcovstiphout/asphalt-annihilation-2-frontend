@@ -22,11 +22,9 @@ export class Obstacle {
         var distanceFromPlayer = this.dist - playerDistance;
         var sizeScaler = 25 / (this.ctx.canvas.height / 1.6) * (this.ctx.canvas.height / 1.6 - distanceFromPlayer); //Step size
 
-        console.log(sizeScaler);
-
         var drawWidth = this.sprite.width / 100 * (1 + sizeScaler);
         var drawHeight = this.sprite.height / 100 * (1 + sizeScaler);
-
+        console.log(distanceFromPlayer + this.sprite.src);
 
         this.ctx.drawImage(this.sprite, this.xAxisLocation - (drawWidth / 2),this.yAxisLocation + (this.dist - distanceFromPlayer),drawWidth, drawHeight);
     }

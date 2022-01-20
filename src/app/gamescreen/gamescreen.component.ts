@@ -37,8 +37,8 @@ export class GamescreenComponent implements OnInit {
     this.road = new Road(this.ctx);
 
 
-    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",500))
-
+    this.objects.push(new Obstacle(this.ctx, "../assets/rock.png",500));
+    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",750));
     this.ngZone.runOutsideAngular(() => this.animate());
     this.animate();
   }
@@ -65,7 +65,6 @@ export class GamescreenComponent implements OnInit {
 
       this.vehicle.draw();
       requestAnimationFrame(()=> this.animate());
-      //var yeet = setInterval(() => {this.animate();},1000);
     }
     //Ensures any running timers and animations are cancelled when the game is exited
     ngOnDestroy() {
