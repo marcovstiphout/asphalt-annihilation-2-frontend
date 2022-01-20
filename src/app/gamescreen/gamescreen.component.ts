@@ -3,6 +3,7 @@ import {Road} from '../gamescreen/models/Road';
 import {Vehicle} from '../gamescreen/models/Vehicle'
 import { HostListener } from '@angular/core';
 import { Obstacle } from './models/Obstacle';
+import { TimeoutError } from 'rxjs';
 
 @Component({
   selector: 'app-gamescreen',
@@ -34,14 +35,15 @@ export class GamescreenComponent implements OnInit {
     this.ctx.fillStyle = 'red';
 
     this.vehicle = new Vehicle(this.ctx);
+    this.vehicle.stats["currentSpeed"] = 0.5;
     this.road = new Road(this.ctx);
 
 
-    this.objects.push(new Obstacle(this.ctx, "../assets/rock.png",500,"middle"));
-    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",750, "middle"));
-    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",1500, "middle"));
+    this.objects.push(new Obstacle(this.ctx, "../assets/rock.png",500,"right"));
     this.ngZone.runOutsideAngular(() => this.animate());
     this.animate();
+    var yeet = setInterval(() => {this.vehicle.stats["currentSpeed"] += 0.5},3000);
+    var skeet = setInterval(() => {this.generateRandomObject(this.vehicle.dist);},5000);
   }
 
   //Handling the game's animations
@@ -55,6 +57,7 @@ export class GamescreenComponent implements OnInit {
       //Text UI Things
       this.ctx.font = '48px serif';
       this.ctx.fillText("Current HP: " + this.vehicle.stats["hp"], 10, 50);
+      this.ctx.fillText("Current Speed: " + this.vehicle.stats["currentSpeed"], 10, 100);
 
       //this.environment.draw();
       this.road.draw();
@@ -97,9 +100,18 @@ export class GamescreenComponent implements OnInit {
         this.keys[event.key] = false;
     }
 
+    private generateRandomObject(playerDist: number)
+    {
+       var directions = ["left", "middle", "right"];
+       var sprite = ["manhole", "rock"]
+
+      this.objects.push(new Obstacle(this.ctx, "../assets/" + sprite[Math.floor(Math.random() * sprite.length)] + ".png",playerDist + 1000, directions[Math.floor(Math.random() * directions.length)]));
+    }
+
     private handleKeyEvents()
     {
       //Speed
+      /*
         if(this.keys["w"] || this.keys["ArrowUp"])
         {
           this.vehicle.moveForward();
@@ -108,11 +120,11 @@ export class GamescreenComponent implements OnInit {
         {
           this.vehicle.break();
         }
-        
+
         if(!this.keys["s"] && !this.keys["ArrowDown"] && !this.keys["w"] && !this.keys["ArrowUp"])
         {
           this.vehicle.naturalSlowdown();
-        }
+        }*/
       //Direction
         if(this.keys["a"] || this.keys["ArrowLeft"])
         {

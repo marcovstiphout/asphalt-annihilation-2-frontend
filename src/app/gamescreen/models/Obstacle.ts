@@ -9,6 +9,7 @@ export class Obstacle {
     public dist = 0;
 
     public lane = "";
+    private laneOffset = 0;
     
 
     constructor(private ctx: CanvasRenderingContext2D, private _sprite: string, private _dist: number,private _lane: string) 
@@ -29,9 +30,16 @@ export class Obstacle {
         var drawWidth = this.sprite.width / 100 * (1 + sizeScaler);
         var drawHeight = this.sprite.height / 100 * (1 + sizeScaler);
 
-        console.log(this.dist + " " + distanceFromPlayer + " , Source: " + this.sprite.src + " ");
+        if(this.lane == "left")
+        {
+           this.laneOffset -= 0.5;
+        }
+        if(this.lane == "right")
+        {
+            this.laneOffset += 0.5;
+        }
 
-        this.ctx.drawImage(this.sprite, this.xAxisLocation - (drawWidth / 2),this.yAxisLocation + (this.ctx.canvas.height / 1.6 - distanceFromPlayer),drawWidth, drawHeight);
+        this.ctx.drawImage(this.sprite, this.xAxisLocation - (drawWidth / 2) + (this.laneOffset + (distanceFromPlayer / 100)),this.yAxisLocation + (this.ctx.canvas.height / 1.6 - distanceFromPlayer),drawWidth, drawHeight);
     }
 
 }
