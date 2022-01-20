@@ -24,7 +24,7 @@ export class Obstacle {
 
         var drawWidth = this.sprite.width / 100 * (1 + sizeScaler);
         var drawHeight = this.sprite.height / 100 * (1 + sizeScaler);
-        console.log(distanceFromPlayer + this.sprite.src);
+        //console.log(distanceFromPlayer + this.sprite.src);
 
         this.ctx.drawImage(this.sprite, this.xAxisLocation - (drawWidth / 2),this.yAxisLocation + (this.dist - distanceFromPlayer),drawWidth, drawHeight);
     }

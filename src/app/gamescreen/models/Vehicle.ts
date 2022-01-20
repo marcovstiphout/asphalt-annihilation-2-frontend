@@ -36,15 +36,20 @@ export class Vehicle {
       this.ctx.drawImage(this.currentSprite, this.xAxisLocation,this.yAxisLocation,300,250);
     }
     moveRight() {
-        this.xAxisLocation += 5;
+        this.xAxisLocation += 1 * this.stats["currentSpeed"];
         this.currentSprite = this.carSprites["right"];
       }
     moveLeft() {
-        this.xAxisLocation -= 5;
+        this.xAxisLocation -= 1 * this.stats["currentSpeed"];
         this.currentSprite = this.carSprites["left"];
       }
     moveForward() {
-      this.dist += 5;
+      if(this.stats["currentSpeed"] != this.stats["maxSpeed"])
+      {
+          this.stats["currentSpeed"] += this.stats["accel"];
+      }
+
+      this.dist += this.stats["currentSpeed"];
       }
     break() {
       this.dist -= 5;

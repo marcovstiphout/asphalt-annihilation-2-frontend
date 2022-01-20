@@ -19,6 +19,7 @@ export class GamescreenComponent implements OnInit {
   public vehicle: Vehicle;
   public road: Road;
   private objects: Obstacle[] = [];
+  private keys: { [key: string]: boolean } = {};
 
   requestId: number;
   interval: number;
@@ -45,6 +46,9 @@ export class GamescreenComponent implements OnInit {
 
   //Handling the game's animations
     animate() {
+      //Ensure any changes to the player are completed
+      this.handleKeyEvents();
+
       //Optimize this later by only clearing the space that is updating
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
       
@@ -73,6 +77,38 @@ export class GamescreenComponent implements OnInit {
 
     //Listen for Keypress Events in order to steer the vehicle
     @HostListener('document:keydown', ['$event'])
+    handleKeyDownEvent(event: KeyboardEvent)
+    {
+        this.keys[event.key] = true;
+        console.log(this.keys);
+    }
+    @HostListener('document:keyup', ['$event'])
+    handleKeyUpEvent(event: KeyboardEvent)
+    {
+        this.keys[event.key] = false;
+    }
+
+    private handleKeyEvents()
+    {
+        if(this.keys["w"] || this.keys["ArrowUp"])
+        {
+          this.vehicle.moveForward();
+        }
+        if(this.keys["s"] || this.keys["ArrowDown"])
+        {
+          this.vehicle.break();
+        }
+        if(this.keys["a"] || this.keys["ArrowLeft"])
+        {
+          this.vehicle.moveLeft();
+        }
+        if(this.keys["d"] || this.keys["ArrowRight"])
+        {
+          this.vehicle.moveRight();
+        }
+    }
+    /*
+    @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) { 
       switch(event.key)
       {
@@ -86,5 +122,5 @@ export class GamescreenComponent implements OnInit {
         case "ArrowRight": {this.vehicle.moveRight(); break;}
       }
     }
-
+*/
 }
