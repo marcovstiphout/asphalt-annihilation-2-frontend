@@ -7,15 +7,19 @@ export class Obstacle {
     private xAxisLocation = 0;
     private yAxisLocation = 0;
     public dist = 0;
+
+    public lane = "";
     
 
-    constructor(private ctx: CanvasRenderingContext2D, private _sprite: string, private _dist: number) 
+    constructor(private ctx: CanvasRenderingContext2D, private _sprite: string, private _dist: number,private _lane: string) 
     { 
         this.sprite.src = _sprite;
         this.dist = _dist;
 
         this.xAxisLocation = (this.ctx.canvas.width/2);
-        this.yAxisLocation = this.ctx.canvas.height - this.ctx.canvas.height / 1.6
+        this.yAxisLocation = this.ctx.canvas.height - this.ctx.canvas.height / 1.6;
+
+        this.lane = _lane;
     }
 
     public draw(playerDistance: number) {

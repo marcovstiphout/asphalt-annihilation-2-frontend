@@ -8,6 +8,8 @@ export class Vehicle {
     private yAxisLocation = 0;
     public dist = 0;
 
+    public currentRoadPart = "middle";
+
     //Game Statistics
     public stats: { [name: string]: number} = {};
 
@@ -30,6 +32,7 @@ export class Vehicle {
         this.stats["accel"] = 2;
         this.stats["maxSpeed"] = 10;
         this.stats["currentSpeed"] = 0;
+        this.stats["hp"] = 100;
     }
 
     public draw() {
@@ -37,11 +40,47 @@ export class Vehicle {
       this.ctx.drawImage(this.currentSprite, this.xAxisLocation,this.yAxisLocation,300,250);
     }
     moveRight() {
-        this.xAxisLocation += 1 * this.stats["currentSpeed"];
+        if(this.currentRoadPart != "right")
+        {
+          switch(this.currentRoadPart)
+          {
+            case "left":
+              this.xAxisLocation += this.carSprites["straight"].width / 2;
+              this.currentRoadPart = "middle";
+              break; 
+            
+            case "middle":
+              this.xAxisLocation += this.carSprites["straight"].width / 2;
+              this.currentRoadPart = "right";
+              break; 
+            default:
+              //statements; 
+              break; 
+          }
+        }
+        //this.xAxisLocation += 1 * this.stats["currentSpeed"];
         this.currentSprite = this.carSprites["right"];
       }
     moveLeft() {
-        this.xAxisLocation -= 1 * this.stats["currentSpeed"];
+      if(this.currentRoadPart != "left")
+      {
+        switch(this.currentRoadPart)
+        {
+          case "right":
+            this.xAxisLocation -= this.carSprites["straight"].width / 2;
+            this.currentRoadPart = "middle";
+            break; 
+          
+          case "middle":
+            this.xAxisLocation -= this.carSprites["straight"].width / 2;
+            this.currentRoadPart = "left";
+            break; 
+          default:
+            //statements; 
+            break; 
+        }
+      }
+      //  this.xAxisLocation -= 1 * this.stats["currentSpeed"];
         this.currentSprite = this.carSprites["left"];
       }
     moveForward() {

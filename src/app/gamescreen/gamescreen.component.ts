@@ -24,7 +24,6 @@ export class GamescreenComponent implements OnInit {
   requestId: number;
   interval: number;
 
-
   ngOnInit(): void {
     const res = this.canvas.nativeElement.getContext('2d');
     if (!res || !(res instanceof CanvasRenderingContext2D))
@@ -38,9 +37,9 @@ export class GamescreenComponent implements OnInit {
     this.road = new Road(this.ctx);
 
 
-    this.objects.push(new Obstacle(this.ctx, "../assets/rock.png",500));
-    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",750));
-    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",1500));
+    this.objects.push(new Obstacle(this.ctx, "../assets/rock.png",500,"middle"));
+    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",750, "middle"));
+    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",1500, "middle"));
     this.ngZone.runOutsideAngular(() => this.animate());
     this.animate();
   }
@@ -55,7 +54,7 @@ export class GamescreenComponent implements OnInit {
       
       //Text UI Things
       this.ctx.font = '48px serif';
-      this.ctx.fillText("Current Dist: " + this.vehicle.dist, 10, 50);
+      this.ctx.fillText("Current HP: " + this.vehicle.stats["hp"], 10, 50);
 
       //this.environment.draw();
       this.road.draw();
@@ -64,7 +63,16 @@ export class GamescreenComponent implements OnInit {
       this.objects.forEach(element => {
         if(element.dist - this.vehicle.dist > -250 && element.dist - this.vehicle.dist <= 500)
         {
-          element.draw(this.vehicle.dist)
+          if(element.dist - this.vehicle.dist < 250 && element.lane == this.vehicle.currentRoadPart)
+          {
+             this.vehicle.stats["hp"] -= 10;
+             const index = this.objects.indexOf(element, 0);
+             this.objects.splice(index, 1);
+          }
+          else
+          {
+            element.draw(this.vehicle.dist);
+          }
         }
       });
 
@@ -105,16 +113,18 @@ export class GamescreenComponent implements OnInit {
         {
           this.vehicle.naturalSlowdown();
         }
-
-
       //Direction
         if(this.keys["a"] || this.keys["ArrowLeft"])
         {
           this.vehicle.moveLeft();
+          this.keys["a"] = false;
+          this.keys["ArrowLeft"] = false;
         }
         if(this.keys["d"] || this.keys["ArrowRight"])
         {
           this.vehicle.moveRight();
+          this.keys["d"] = false;
+          this.keys["ArrowRight"] = false;
         }
         if(!this.keys["a"] && !this.keys["ArrowLeft"] && !this.keys["d"] && !this.keys["ArrowRight"] && this.vehicle.stats["currentSpeed"] != 0)
         {
