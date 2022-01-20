@@ -40,6 +40,7 @@ export class GamescreenComponent implements OnInit {
 
     this.objects.push(new Obstacle(this.ctx, "../assets/rock.png",500));
     this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",750));
+    this.objects.push(new Obstacle(this.ctx, "../assets/manhole.png",1500));
     this.ngZone.runOutsideAngular(() => this.animate());
     this.animate();
   }
@@ -115,7 +116,7 @@ export class GamescreenComponent implements OnInit {
         {
           this.vehicle.moveRight();
         }
-        if(!this.keys["a"] && !this.keys["ArrowLeft"] && !this.keys["d"] && !this.keys["ArrowRight"])
+        if(!this.keys["a"] && !this.keys["ArrowLeft"] && !this.keys["d"] && !this.keys["ArrowRight"] && this.vehicle.stats["currentSpeed"] != 0)
         {
           this.vehicle.straightenCar();
         }

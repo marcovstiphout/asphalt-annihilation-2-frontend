@@ -15,7 +15,7 @@ export class Obstacle {
         this.dist = _dist;
 
         this.xAxisLocation = (this.ctx.canvas.width/2);
-        this.yAxisLocation = this.ctx.canvas.height / 3 + 30;
+        this.yAxisLocation = this.ctx.canvas.height - this.ctx.canvas.height / 1.6
     }
 
     public draw(playerDistance: number) {
@@ -24,9 +24,10 @@ export class Obstacle {
 
         var drawWidth = this.sprite.width / 100 * (1 + sizeScaler);
         var drawHeight = this.sprite.height / 100 * (1 + sizeScaler);
-        //console.log(distanceFromPlayer + this.sprite.src);
 
-        this.ctx.drawImage(this.sprite, this.xAxisLocation - (drawWidth / 2),this.yAxisLocation + (this.dist - distanceFromPlayer),drawWidth, drawHeight);
+        console.log(this.dist + " " + distanceFromPlayer + " , Source: " + this.sprite.src + " ");
+
+        this.ctx.drawImage(this.sprite, this.xAxisLocation - (drawWidth / 2),this.yAxisLocation + (this.ctx.canvas.height / 1.6 - distanceFromPlayer),drawWidth, drawHeight);
     }
 
 }
